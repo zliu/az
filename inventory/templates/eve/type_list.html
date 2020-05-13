@@ -1,0 +1,7 @@
+  <p>
+  <img src='https://image.evepc.163.com/Type/{{ types.typeID}}_64.png' background='dark'>
+
+  </p>
+  <p> {{ types.typeName}} </p>
+  <p>{% autoescape off %} {{ types.description }} {% endautoescape %} </p>
+  <p> {{ types.description | safe }}  </p>
