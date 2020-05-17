@@ -1,0 +1,110 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type='text/javascript'>
+      var item_info = {{ item_info_json_string |safe }};
+      var industry = {{ industry |safe }};
+      var market = {{ market |safe }};
+    </script>
+  </head>
+  <body>
+    {% verbatim %}
+    <div id='display_item'>
+      <ul>
+        <img v-bind:src="'https://image.evepc.163.com/Type/'+item_id+'_64.png'" background='dark'>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>attribute</th>
+              <th>value</th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr v-for="(value, key) in item_detail" :key="key">
+          <td> {{ key}} </td>
+          <td>
+          <div v-if="key === 'description'">  <div v-html="value">  </div></div>
+          <div v-else>  {{value}}</div>
+          </td>
+        </tr>
+          </tbody>
+      </table>
+    <h2> Industry Materials </h2>
+      <div v-if="industry">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>material</th>
+              <th>quantiry</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr v-for="material in industry">
+            <td> {{material.material_name}}  </td>
+            <td> {{material.quantity}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <h2> Price </h2>
+      <h3> Sell </h3>
+      <div v-if='market'>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>order remain </th>
+              <th>remain </th>
+              <th>issued </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="order in market.sell.slice(0,10)" >
+              <td>{{ order.volume_remain }}</td>
+              <td>{{ order.price }}</td>
+              <td>{{ order.issued }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h3> Buy </h3>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>order remain </th>
+              <th>remain </th>
+              <th>issued </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="order in market.buy.slice(0,10)" >
+              <td>{{ order.volume_remain }}</td>
+              <td>{{ order.price }}</td>
+              <td>{{ order.issued }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endverbatim %}
+    <p> {{ item.typeID}} </p>
+    <p> {{ item.typeName}} </p>
+    <p>{% autoescape off %} {{ item.description }} {% endautoescape %} </p>
+    <p> {{ item.description | safe }}  </p>
+    <p> {{ item }}  </p>
+    <script>
+      var app = new Vue({
+        el: '#display_item',
+        data: {
+          item_detail: item_info.fields,
+          item_id : item_info.pk,
+          industry: industry,
+          market: market,
+        },
+        methods: {
+          greet: function(name) {
+            console.log('Hello from ' + name + '!')
+          }
+        }
+      });
+    </script>
+  </body>
+</html>

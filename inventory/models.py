@@ -124,7 +124,14 @@ class invMarketGroups(models.Model):
 #class invNames(models.Model):
 #class invPositions(models.Model):
 #class invTraits(models.Model):
-#class invTypeMaterials(models.Model):
+class invTypeMaterials(models.Model):
+    productTypeID = models.ForeignKey('inventory.invTypes', db_column='typeID', related_name='product_id', on_delete=models.PROTECT)
+    materialTypeID = models.ForeignKey('inventory.invTypes', db_column='materialTypeID', related_name='material_id', on_delete=models.PROTECT, primary_key=True)
+    quantity = models.IntegerField(db_column='quantity')
+    class Meta:
+        managed = False
+        db_table = 'invTypeMaterials'
+        unique_together = (('productTypeID', 'materialTypeID'),)
 #class invTypeReactions(models.Model):
 
 class invTypes(models.Model):
@@ -181,8 +188,32 @@ class invTypes(models.Model):
 #class staStationTypes(models.Model):
 #class staStations(models.Model):
 #class translationTables(models.Model):
-#class trnTranslationColumns(models.Model):
-#class trnTranslationLanguages(models.Model):
-#class trnTranslations(models.Model):
+class trnTranslationColumns(models.Model):
+    tcGroupID = models.IntegerField(db_column='tcGroupID')
+    tcID = models.IntegerField(db_column='tcID', primary_key=True)
+    tableName = models.CharField(max_length=256, db_column='tableName')
+    columnName = models.CharField(max_length=128, db_column='columnName')
+    masterID = models.CharField(max_length=128, db_column='masterID')
+    class Meta:
+        managed = False
+        db_table = 'trnTranslationColumns'
+
+class trnTranslationLanguages(models.Model):
+    numericLanguageID = models.IntegerField(db_column='numericLanguageID')
+    languageID = models.CharField(max_length=50, db_column='languageID', primary_key=True)
+    languageName = models.CharField(max_length=200, db_column='languageName')
+    class Meta:
+        managed = False
+        db_table = 'trnTranslationLanguages'
+
+class trnTranslations(models.Model):
+    tcID = models.ForeignKey('inventory.trnTranslationColumns', db_column='tcID', related_name='trans_column_id', on_delete=models.PROTECT)
+    keyID = models.ForeignKey('inventory.invTypes', db_column='keyID', related_name='type_id', on_delete=models.PROTECT, primary_key=True)
+    languageID = models.ForeignKey('inventory.trnTranslationLanguages', db_column='languageID', on_delete=models.PROTECT)
+    text = models.TextField()
+    class Meta:
+        managed = False
+        db_table = 'trnTranslations'
+        unique_together = (('tcID', 'keyID', 'languageID'),)
 #class warCombatZoneSystems(models.Model):
 #class warCombatZones(models.Model):
