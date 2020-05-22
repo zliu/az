@@ -36,3 +36,16 @@ def type_detail(request, type_id):
     buy_list = sorted([p for p in price_list if p['is_buy_order']], key=itemgetter('price'), reverse=True)
     context['market'] = json.dumps({'buy':buy_list, 'sell': sell_list})
     return render(request, 'eve/type_detail.html', context)
+
+def industry_indices(request):
+    result = requests.get('https://esi.evepc.163.com/latest/industry/systems/?datasource=serenity').json()
+    # DS-LO3 system id is 30003992
+    index = None
+    for idx in result:
+        if idx['solar_system_id'] == 30003992:
+            index = idx['cost_indices']
+            break
+    context = {}
+    context['index'] = json.dumps(index)
+    return render(request, 'eve/industry.html', context)
+
