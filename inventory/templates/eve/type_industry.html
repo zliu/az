@@ -1,0 +1,73 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type='text/javascript'>
+      var industry = {{ cost |safe }};
+    </script>
+  </head>
+  <body>
+    {% verbatim %}
+    <div id='display_item'>
+      <ul>
+        <img v-bind:src="'https://image.evepc.163.com/Type/'+item_id+'_64.png'" background='dark'>
+        <table class="table table-striped" border=1px margin=1px>
+          <thead>
+            <tr>
+              <th>name</th>
+              <th>{{name}}</th>
+            </tr>
+            <tr>
+              <th>buy</th>
+              <th>sell</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td> buy:  {{ industry.buy.toLocaleString()}} </td>
+              <td> sell: {{ industry.sell.toLocaleString()}} </td>
+            </tr>
+            <tr>
+              <td> buy_cost:  {{ industry.buy_cost.toLocaleString()}} </td>
+              <td> sell_cost: {{ industry.sell_cost.toLocaleString()}} </td>
+            </tr>
+            <tr>
+              <td> buy_interest:  {{ industry.interest_buy.toLocaleString() }}% </td>
+              <td> sell_interest: {{ industry.interest_sell.toLocaleString()}}% </td>
+            </tr>
+          </tbody>
+        </table>
+        <div v-if="industry.cost.length > 0">
+          <h2> Industry Materials </h2>
+        <table class="table table-striped" border=1px>
+          <thead>
+            <tr>
+              <th>material</th>
+              <th>quantiry</th>
+              <th>sell</th>
+              <th>buy</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr v-for="material in industry.cost">
+            <td> {{material.material_name}}  </td>
+            <td> {{material.quantity}}</td>
+            <td> {{material.sell.toLocaleString()}}</td>
+            <td> {{material.buy.toLocaleString()}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% endverbatim %}
+    <script>
+      var app = new Vue({
+        el: '#display_item',
+        data: {
+          industry: industry,
+          item_id: industry.id,
+          name: industry.name,
+        },
+      });
+    </script>
+  </body>
+</html>

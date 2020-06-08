@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type='text/javascript'>
+      var industry_index = {{ index |safe }};
+    </script>
+  </head>
+  <body>
+    {% verbatim %}
+    <div id='display_item'>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>activity </th>
+              <th>index </th>
+            </tr>
+          </thead>
+          <tbody>
+        <tr v-for="idx in indices" >
+          <td> {{ idx.activity}} </td>
+          <td> {{ idx.cost_index}} </td>
+        </tr>
+          </tbody>
+      </table>
+    </div>
+    {% endverbatim %}
+    <script>
+      var app = new Vue({
+        el: '#display_item',
+        data: {
+          indices: industry_index,
+        },
+      });
+    </script>
+  </body>
+</html>

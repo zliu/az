@@ -12,7 +12,7 @@
     <div id='display_item'>
       <ul>
         <img v-bind:src="'https://image.evepc.163.com/Type/'+item_id+'_64.png'" background='dark'>
-        <table class="table table-striped">
+        <table class="table table-striped" border=1px>
           <thead>
             <tr>
               <th>attribute</th>
@@ -24,14 +24,15 @@
           <td> {{ key}} </td>
           <td>
           <div v-if="key === 'description'">  <div v-html="value">  </div></div>
+          <div v-else-if="key === 'typeName'"> <a v-bind:href="'../../industry/'+item_id"> {{value}}</a> </div>
           <div v-else>  {{value}}</div>
           </td>
         </tr>
           </tbody>
       </table>
       <div v-if="industry.length > 0">
-    <h2> Industry Materials </h2>
-        <table class="table table-striped">
+        <h2> Industry Materials </h2>
+        <table class="table table-striped" border=1px>
           <thead>
             <tr>
               <th>material</th>
@@ -39,21 +40,21 @@
             </tr>
           </thead>
           <tbody>
-          <tr v-for="material in industry">
-            <td> {{material.material_name}}  </td>
-            <td> {{material.quantity}}</td>
-          </tr>
+            <tr v-for="material in industry">
+              <td> {{material.material_name}}  </td>
+              <td> {{material.quantity}}</td>
+            </tr>
           </tbody>
         </table>
       </div>
       <h2> Price </h2>
       <h3> Sell </h3>
       <div v-if='market'>
-        <table class="table table-striped">
+        <table class="table table-striped" border=1px>
           <thead>
             <tr>
-              <th>order remain </th>
-              <th>remain </th>
+              <th>volume remain </th>
+              <th>price </th>
               <th>issued </th>
             </tr>
           </thead>
@@ -66,11 +67,11 @@
           </tbody>
         </table>
         <h3> Buy </h3>
-        <table class="table table-striped">
+        <table class="table table-striped" border=1px>
           <thead>
             <tr>
-              <th>order remain </th>
-              <th>remain </th>
+              <th>volume remain </th>
+              <th>price </th>
               <th>issued </th>
             </tr>
           </thead>
